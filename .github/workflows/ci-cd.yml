@@ -116,7 +116,7 @@ jobs:
 
   deploy-frontend:
     name: Deploy Frontend to Vercel
-    needs: [test-all, build-and-push]
+    needs: [test-all] # Chỉ cần test-all thành công là được, bỏ phụ thuộc bắt buộc vào build-and-push
     runs-on: ubuntu-latest
     if: always() && (github.ref == 'refs/heads/main' || github.event_name == 'pull_request') && (needs.test-all.result == 'success')
     steps:
