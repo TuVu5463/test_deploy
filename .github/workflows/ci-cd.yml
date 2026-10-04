@@ -93,7 +93,7 @@ jobs:
     name: Build & Push Docker Image
     needs: test-all
     runs-on: ubuntu-latest
-    continue-on-error: true
+    continue-on-error: true # Nếu docker lỗi thì workflow vẫn không bị dừng toàn bộ
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
@@ -116,9 +116,9 @@ jobs:
 
   deploy-frontend:
     name: Deploy Frontend to Vercel
-    needs: [test-all] # Chỉ cần test-all thành công là được, bỏ phụ thuộc bắt buộc vào build-and-push
+    needs: [test-all] # Độc lập với build-and-push, chỉ cần test-all pass là chạy
     runs-on: ubuntu-latest
-    if: always() && (github.ref == 'refs/heads/main' || github.event_name == 'pull_request') && (needs.test-all.result == 'success')
+    if: always() && (github.ref == 'refs/heads/master' || github.event_name == 'pull_request') && (needs.test-all.result == 'success')
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
