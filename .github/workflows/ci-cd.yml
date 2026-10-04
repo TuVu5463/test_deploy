@@ -135,9 +135,12 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_ORG_ID: "usr_zIAaqVgZ2w8hgm6UIS7PBLQE"
         run: |
-          # 1. Tạo thư mục cấu hình chuẩn cho Vercel CLI
+          # 1. Tạo thư mục cấu hình chuẩn cho Vercel CLI trong thư mục frontend
           mkdir -p .vercel
           echo "{\"projectId\":\"$VERCEL_PROJECT_ID\",\"orgId\":\"$VERCEL_ORG_ID\"}" > .vercel/project.json
           
-          # 2. Deploy trực tiếp
+          # 2. Cài đặt Vercel CLI toàn cục
+          npm install --global vercel@latest
+
+          # 3. Deploy trực tiếp sản phẩm Vite lên Vercel Production
           npx vercel --prod --token=$VERCEL_TOKEN --yes
