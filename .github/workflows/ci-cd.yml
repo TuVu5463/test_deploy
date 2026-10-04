@@ -15,7 +15,6 @@ jobs:
         uses: actions/setup-node@v5 # Sử dụng setup-node v5 mới nhất
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Install dependencies & Build Vite App
         run: |
