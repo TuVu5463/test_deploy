@@ -9,14 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5 # Nâng lên v5 (hoặc giữ v4 nếu v5 chưa cập nhật ở kho của bạn)
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v5 # Sử dụng setup-node v5 mới nhất
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: Install dependencies & Build Vite App
+        working-directory: ./frontend  # <--- Quan trọng: Chuyển vào thư mục chứa package.json của Vite
         run: |
           npm install
           npm run build
@@ -25,12 +26,14 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Pull Vercel Environment Information
+        working-directory: ./frontend  # <--- Chuyển vào frontend để vercel CLI nhận đúng project
         run: vercel pull --environment=production --yes --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy Project to Vercel
+        working-directory: ./frontend  # <--- Chuyển vào frontend để deploy
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
